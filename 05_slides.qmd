@@ -1,0 +1,100 @@
+---
+title: "Assignment 05"
+author: "Maisy Christians"
+date: "`r Sys.Date()`"
+format:
+    revealjs:
+        theme: dracula
+bibliography: ref.bib
+transtition: slide
+---
+
+```{r}
+#| echo: false
+#| message: false
+
+library(tidyverse)
+```
+
+```{r}
+#| echo: false
+#| message: false
+
+wdi <- read.csv("wdi.csv")
+
+#head(wdi)
+```
+
+
+## Indicator 1
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: "Source: World Development Indicators (2022)"
+
+ggplot(wdi, aes(x = log10(gdp_per_capita), y = measles_immunisation_rate)) +
+    geom_point(size = 3, alpha = 0.5) +
+    theme_minimal() +
+    labs(title = "Measles immunization vs. GDP", x = "log(GDP per capita)", y = "Measles immunization rate")
+```
+
+There are no rich countries who also have low measles immunization.
+
+
+
+## Indicator 2
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: "Source: World Development Indicators (2022)"
+
+ggplot(wdi, aes(x = health_expenditure_gdp_share, y = education_expenditure_gdp_share)) +
+    geom_point(size = 3, alpha = 0.5) +
+    theme_minimal() +
+    labs(title = "Education expenditure vs. Health expenditure", x = "Education expenditure (GDP %)", y = "Health expenditure (GDP %)")
+```
+
+Educational expenditure and health expenditure have a direct relationship [@muarginean2014public].
+
+
+## Indicator 3
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-cap: "Source: World Development Indicators (2022)"
+
+wdi_3 <- wdi %>%
+mutate(life_exp_group = case_when(
+    life_expectancy < 70 ~ "<70",
+    (life_expectancy >= 70 & life_expectancy <= 80) ~ "70-80",
+    life_expectancy > 80 ~ ">80")) %>%
+group_by(life_exp_group) %>%
+summarize(avg = mean(gdp_per_capita, na.rm = TRUE), count = n())
+
+wdi_3$life_exp_group <- factor(wdi_3$life_exp_group,
+    levels = c("<70", "70-80", ">80"))
+
+ggplot(wdi_3, aes(x = life_exp_group, y = avg)) +
+    geom_col(aes(fill = life_exp_group), show.legend = FALSE) +
+    theme_minimal() +
+    labs(title = "GDP vs. Life expectancy", x = "Life expectancy (years)", y = "Average GDP per capita")
+```
+
+GDP is higher for countries with greater life expectancies [@kabir2008determinants].
+See @tbl-1 for numbers used.
+
+
+## Table with key statistics
+
+|Life expectancy (years) | # of countries| Average GDP per capita |
+|:---|:-----:|:-------:|
+|<70| 65|$2,955|
+|70-80|105|$13,562|
+|>80|47|$61,484|
+: {#tbl-1}
+
+
+## Bibliography

@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Assignment 05"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: 05_slides.qmd
+        text: Presentation
+      - href: 05_html.qmd
+        text: HTML
+
+format:
+  html:
+    theme: darkly
+    toc: true

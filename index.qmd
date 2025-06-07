@@ -1,0 +1,6 @@
+---
+title: "Assignment 05"
+---
+
+This is the homepage of my Assignment 05 website, containing a slideshow and an html version of my submission.
+
