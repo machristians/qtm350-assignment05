@@ -6,7 +6,7 @@ format:
     revealjs:
         theme: dracula
 bibliography: ref.bib
-transtition: slide
+transition: zoom
 ---
 
 ```{r}
